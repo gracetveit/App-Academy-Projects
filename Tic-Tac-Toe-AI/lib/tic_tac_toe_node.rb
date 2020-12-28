@@ -8,7 +8,33 @@ class TicTacToeNode
     @prev_move_pos = prev_move_pos
   end
 
+  def inverse_mark(mark)
+    if mark == :o
+      return :x
+    else
+      return :o
+    end
+  end
+
   def losing_node?(evaluator)
+    opponent = self.inverse_mark(evaluator)
+    # Base Case
+    if @board.over?
+      if @board.winner == opponent
+        return true
+      else
+        return false
+      end
+    end
+    # Recursive Case
+    # Players turn, all children nodes are losers
+    if @next_mover_mark == evaluator
+      return self.children.all? { |child| child.losing_node?(evaluator) }
+    else
+      # Or it's opponents turn, and one of the children nodes is a losing node
+      return self.children.any? { |child| child.losing_node?(evaluator) }
+    end
+    
   end
 
   def winning_node?(evaluator)
@@ -27,13 +53,9 @@ class TicTacToeNode
         pos = [x, y]
         if @board.empty?(pos)
           new_board = @board.dup
-          new_board[pos] = next_mover_mark
+          new_board[pos] = @next_mover_mark
 
-          if next_mover_mark == :o
-            new_mover_mark = :x
-          else
-            new_mover_mark = :o
-          end
+          new_mover_mark = self.inverse_mark(new_mover_mark)
 
           new_arr << TicTacToeNode.new(new_board, new_mover_mark, pos)
         end
