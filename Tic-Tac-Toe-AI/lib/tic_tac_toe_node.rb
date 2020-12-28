@@ -38,6 +38,22 @@ class TicTacToeNode
   end
 
   def winning_node?(evaluator)
+    opponent = self.inverse_mark(evaluator)
+    # Base Case
+    if @board.over?
+      if @board.winner == evaluator
+        return true
+      else
+        return false
+      end
+    end
+
+    # Recursive Case
+    if @next_mover_mark == evaluator
+      return self.children.any? { |child| child.winning_node?(evaluator) }
+    else
+      return self.children.all? { |child| child.winning_node?(evaluator) }
+    end
   end
 
   # This method generates an array of all moves that can be made after
