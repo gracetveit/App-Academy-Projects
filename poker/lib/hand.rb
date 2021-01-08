@@ -107,6 +107,7 @@ class Hand
     def straight?
         values = @cards.map { |cards| cards.value }
         return true if values.max - values.min == 4
+        return true if values == [2, 3, 4, 5, 14]
         false
     end
 
