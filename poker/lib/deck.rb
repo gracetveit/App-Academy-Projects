@@ -1,4 +1,4 @@
-require 'card'
+require_relative 'card'
 
 class Deck
     def initialize
@@ -9,8 +9,8 @@ class Deck
             :Diamond,
             :Club
         ]
+        num = 1
         13.times do |i|
-            num = 1
             suits.each do |suit|
                 @cards << Card.new(suit, num)
             end
