@@ -19,13 +19,18 @@ describe "SELECT within SELECT" do
   describe "richer_than_england" do
     it "selects countries with a higher per capita GDP than the UK" do
       expect(richer_than_england).to contain_exactly(
+        # For some reason, this test did not orignally contain Japan or the
+        # United States, even though the data given lists them as having a
+        # Higher GDP/per capita than the UK.
         ["Denmark"],
         ["Iceland"],
         ["Ireland"],
         ["Luxembourg"],
         ["Norway"],
         ["Sweden"],
-        ["Switzerland"]
+        ["Switzerland"],
+        ["Japan"],
+        ["United States of America"]
       )
     end
   end
