@@ -16,9 +16,26 @@ class ShortenedUrl < ApplicationRecord
     validates :short_url, uniqueness: true
     validates :user_id, presence: true
 
-    belongs_to(:user, {
+    belongs_to(:submitter, {
         primary_key: :id,
         foreign_key: :user_id,
         class_name: :User
     })
+
+    def self.random_code
+        code = SecureRandom.urlsafe_base64
+        while ShortenedUrl.exists?(short_url: code)
+            code = SecureRandom.urlsafe_base64
+        end
+        code
+    end
+
+    def self.create!(user, long_url)
+        short_url = ShortenedUrl.random_code
+        ShortenedUrl.new(
+            long_url: long_url,
+            short_url: short_url,
+            user_id: user.id
+        ).save
+    end
 end
