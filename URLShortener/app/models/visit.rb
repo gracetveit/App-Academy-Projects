@@ -11,4 +11,8 @@
 #
 
 class Visit < ApplicationRecord
+    validates :num_visits, presence: true
+    validates :shortened_url_id, presence: true
+    validates :shortened_url_id, uniqueness: true
+    validates :user_id, presence: true
 end
