@@ -11,9 +11,7 @@
 #
 
 class Visit < ApplicationRecord
-    validates :num_visits, presence: true
     validates :shortened_url_id, presence: true
-    validates :shortened_url_id, uniqueness: true
     validates :user_id, presence: true
 
     belongs_to(:visitors, {
@@ -30,7 +28,6 @@ class Visit < ApplicationRecord
 
     def self.record_visit!(user, shortened_url)
         Visit.create!(
-            num_visits: 1, 
             shortened_url_id: shortened_url.id,
             user_id: user.id
         )
