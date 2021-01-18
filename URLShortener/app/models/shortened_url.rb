@@ -48,6 +48,7 @@ class ShortenedUrl < ApplicationRecord
             short_url: short_url,
             user_id: user.id
         ).save!
+        ShortenedUrl.where(short_url: short_url)[0]
     end
 
     def num_clicks

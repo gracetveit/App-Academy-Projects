@@ -1,0 +1,54 @@
+#!/usr/bin/env ruby
+
+# Ask user for their email; find the `user` with this email
+def get_user
+    puts "Input your email:"
+    input = gets.chomp
+    user = User.where(email: input)[0]
+    user = User.create(email: input) if user == nil
+    user
+end
+# Give the option of visiting a shortened URL or creating one
+def options(user)
+    begin
+        puts "What do you want to do?"
+        puts "0. Create shortened URL"
+        puts "1. Visit shortened URL"
+        input = gets.chomp
+        test = /^[0-1]$/.match?(input)
+        raise "Invalid input, please try again" if !test
+    rescue
+        retry
+    end
+    if input == "0"
+        create_url(user)
+    else
+        launch_url(user)
+    end
+end
+# When they select a new short URL, create one and show it to them
+def create_url(user)
+    puts "Type in your long url"
+    input = gets.chomp
+    new_url = ShortenedUrl.create!(user, input)
+    puts "Short url is: #{new_url.short_url}"
+    puts "Goodbye!"
+end
+# use `launchy` gem to open a url in the browser; record a visit
+def launch_url(user)
+    begin
+        puts "Type in the shortened URL"
+        input = gets.chomp
+        test = ShortenedUrl.exists?(short_url: input)
+        raise "URL does not exist, please try again" if !test
+    rescue
+        retry
+    end
+    url = ShortenedUrl.where(short_url: input)[0].long_url
+    Visit.record_visit!(user, ShortenedUrl.where(short_url: input)[0])
+    puts "Launching #{url}"
+    Launchy.open(url)
+    puts "Goodbye!"
+end
+
+options(get_user)
