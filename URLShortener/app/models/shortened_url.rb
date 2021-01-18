@@ -16,6 +16,7 @@ class ShortenedUrl < ApplicationRecord
     validates :short_url, uniqueness: true
     validates :user_id, presence: true
     validate :no_spamming
+    validate :nonpremium_max
 
     def no_spamming
         recent_urls = ShortenedUrl.all.where('created_at > ?', 5.minutes.ago)
@@ -23,6 +24,14 @@ class ShortenedUrl < ApplicationRecord
         test = recent_users.count(self.user_id) >= 5
         if test
             errors.add(:user_id, "Can't upload more than 5 links in 5 minutes")
+        end
+    end
+
+    def nonpremium_max
+        count = self.submitter.submitted_urls.count
+        premium = self.submitter.premium
+        if !premium && count >= 5
+            errors.add(:user_id, "Is not premium, and cannot add more than 5 links")
         end
     end
 
