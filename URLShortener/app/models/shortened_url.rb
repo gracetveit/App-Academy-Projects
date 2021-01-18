@@ -15,6 +15,16 @@ class ShortenedUrl < ApplicationRecord
     validates :short_url, presence: true
     validates :short_url, uniqueness: true
     validates :user_id, presence: true
+    validate :no_spamming
+
+    def no_spamming
+        recent_urls = ShortenedUrl.all.where('created_at > ?', 5.minutes.ago)
+        recent_users = recent_urls.map { |e| e.user_id }
+        test = recent_users.count(self.user_id) >= 5
+        if test
+            errors.add(:user_id, "Can't upload more than 5 links in 5 minutes")
+        end
+    end
 
     belongs_to(:submitter, {
         primary_key: :id,
