@@ -20,5 +20,11 @@ class TagTopic < ApplicationRecord
     has_many :shortened_urls,
         through: :taggings,
         source: :shortened_urls
-
+    
+    def popular_links
+        sorted = self.shortened_urls.sort  do |a, b| 
+            b.num_clicks <=> a.num_clicks
+        end
+        sorted[0..4].map {|e| [e.long_url, e.num_clicks]}
+    end
 end

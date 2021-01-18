@@ -16,6 +16,6 @@ tagging2 = Tagging.create shortened_url_id: 2, tag_topic_id: tag2.id
 tagging3 = Tagging.create shortened_url_id: 3, tag_topic_id: tag2.id
 tagging4 = Tagging.create shortened_url_id: 4, tag_topic_id: tag3.id
 tagging5 = Tagging.create shortened_url_id: 5, tag_topic_id: tag3.id
-tagging6 = Tagging.create shortened_url_id: 6, tag_topic_id: tag2.id
+tagging6 = Tagging.create shortened_url_id: 6, tag_topic_id: tag3.id
 tagging7 = Tagging.create shortened_url_id: 7, tag_topic_id: tag2.id
 tagging8 = Tagging.create shortened_url_id: 8, tag_topic_id: tag2.id
