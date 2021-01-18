@@ -32,6 +32,4 @@ class Visit < ApplicationRecord
             user_id: user.id
         )
     end
-
-    
 end
