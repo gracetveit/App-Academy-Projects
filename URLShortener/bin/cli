@@ -30,7 +30,7 @@ end
 def create_url(user)
     puts "Type in your long url"
     input = gets.chomp
-    new_url = ShortenedUrl.create!(user, input)
+    new_url = ShortenedUrl.create_for_user_and_long_url!(user, input)
     puts "Short url is: #{new_url.short_url}"
     puts "Goodbye!"
 end

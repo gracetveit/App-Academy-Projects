@@ -41,17 +41,17 @@ class ShortenedUrl < ApplicationRecord
         class_name: :User
     })
 
-    has_many(:visits, {
+    has_many :visits,
+        dependent: :destroy,
         primary_key: :id,
         foreign_key: :shortened_url_id,
         class_name: :Visit
-    })
 
-    has_many(:taggings, {
+    has_many :taggings,
+        dependent: :destroy,
         primary_key: :id,
         foreign_key: :shortened_url_id,
         class_name: :Tagging
-    })
 
     has_many :visitors,
         -> {distinct},
@@ -70,7 +70,7 @@ class ShortenedUrl < ApplicationRecord
         code
     end
 
-    def self.create!(user, long_url)
+    def self.create_for_user_and_long_url!(user, long_url)
         short_url = ShortenedUrl.random_code
         ShortenedUrl.new(
             long_url: long_url,
@@ -78,6 +78,36 @@ class ShortenedUrl < ApplicationRecord
             user_id: user.id
         ).save!
         ShortenedUrl.where(short_url: short_url)[0]
+    end
+
+    def self.prune(n)
+        # SELECT * 
+        # FROM shortened_urls 
+        # LEFT JOIN visits on shortened_urls.id = visits.shortened_url_id 
+        # WHERE visits.shortened_url_id NOT IN (
+            # SELECT shortened_url_id 
+            # FROM visits 
+            # WHERE id = 23);
+        # OR (
+            #visits.id
+
+        pruned_urls = ShortenedUrl.
+            left_outer_joins(:visits).
+            where(<<-SQL, n.minutes.ago)
+                visits.shortened_url_id NOT IN (
+                    SELECT shortened_url_id 
+                    FROM visits 
+                    WHERE visits.created_at > ?)
+            SQL
+            .or(ShortenedUrl.
+                where('visits.id IS NULL AND shortened_urls.created_at < ?', 
+                    n.minutes.ago)).
+                    uniq
+
+        pruned_urls.each do |e|
+            next if e.submitter.premium
+            e.destroy
+        end
     end
 
     def num_clicks
