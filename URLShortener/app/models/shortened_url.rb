@@ -81,16 +81,6 @@ class ShortenedUrl < ApplicationRecord
     end
 
     def self.prune(n)
-        # SELECT * 
-        # FROM shortened_urls 
-        # LEFT JOIN visits on shortened_urls.id = visits.shortened_url_id 
-        # WHERE visits.shortened_url_id NOT IN (
-            # SELECT shortened_url_id 
-            # FROM visits 
-            # WHERE id = 23);
-        # OR (
-            #visits.id
-
         pruned_urls = ShortenedUrl.
             left_outer_joins(:visits).
             where(<<-SQL, n.minutes.ago)
