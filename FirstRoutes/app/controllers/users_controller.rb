@@ -4,7 +4,7 @@ class UsersController < ApplicationController
     end
 
     def path_params
-        params.require(:user).permit(:name, :email)
+        params.require(:user).permit(:username)
     end
 
     def index
