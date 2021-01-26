@@ -1,4 +1,12 @@
 class UsersController < ApplicationController
+    def get_user
+        User.where(id: params[:id].to_i)[0]
+    end
+
+    def path_params
+        params.require(:user).permit(:name, :email)
+    end
+
     def index
         render json: User.all
     end
@@ -11,9 +19,19 @@ class UsersController < ApplicationController
             render json: user.errors.full_messages, 
                 status: :unprocessable_entity
         end
+    end   
+
+    def show
+        render json: get_user
     end
 
-    def path_params
-        params.require(:user).permit(:id, :name, :email)
+    def update
+        User.update(params[:id].to_i, path_params)
+        render json: get_user
+    end
+
+    def destroy
+        User.destroy(params[:id].to_i)
+        render json: User.all
     end
 end
