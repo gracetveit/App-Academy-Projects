@@ -13,11 +13,13 @@ class User < ApplicationRecord
     validates :username, uniqueness: true
 
     has_many :artworks,
+        dependent: :destroy,
         primary_key: :id,
         foreign_key: :artist_id,
         class_name: :Artwork
 
     has_many :artwork_shares,
+        dependent: :destroy,
         primary_key: :id,
         foreign_key: :viewer_id,
         class_name: :ArtworkShare
