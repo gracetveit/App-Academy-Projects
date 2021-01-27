@@ -3,10 +3,6 @@ class UsersController < ApplicationController
         User.where(id: params[:id].to_i)[0]
     end
 
-    def path_params
-        params.require(:user).permit(:username)
-    end
-
     def index
         render json: User.all
     end
@@ -33,5 +29,11 @@ class UsersController < ApplicationController
     def destroy
         User.destroy(params[:id].to_i)
         render json: User.all
+    end
+
+    private
+
+    def path_params
+        params.require(:user).permit(:username)
     end
 end
