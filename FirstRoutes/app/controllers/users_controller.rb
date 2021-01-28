@@ -1,8 +1,4 @@
 class UsersController < ApplicationController
-    def get_user
-        User.where(id: params[:id].to_i)[0]
-    end
-
     def index
         render json: User.all
     end
@@ -22,8 +18,11 @@ class UsersController < ApplicationController
     end
 
     def update
-        User.update(params[:id].to_i, path_params)
-        render json: get_user
+        if User.update(params[:id].to_i, path_params)
+            render json: get_user
+        else
+            render json: get_user.errors.full_messages
+        end
     end
 
     def destroy
@@ -35,5 +34,9 @@ class UsersController < ApplicationController
 
     def path_params
         params.require(:user).permit(:username)
+    end
+
+    def get_user
+        User.where(id: params[:id].to_i)[0]
     end
 end
