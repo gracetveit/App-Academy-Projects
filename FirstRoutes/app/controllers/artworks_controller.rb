@@ -1,6 +1,8 @@
 class ArtworksController < ApplicationController
     def index
-        render json: Artwork.all
+        # render json: Artwork.all
+        user = User.where(id: params[:user_id].to_i)[0]
+        render json: [user.artworks, user.shared_artworks]
     end
 
     def create
