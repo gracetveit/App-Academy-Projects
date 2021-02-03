@@ -10,6 +10,7 @@ class CatsController < ApplicationController
     end
 
     def new
+        @cat = Cat.new
         render :new
     end
 
@@ -20,6 +21,22 @@ class CatsController < ApplicationController
             redirect_to cat_url(@cat)
         else
             render :new
+            puts @cat.errors.full_messages
+        end
+    end
+
+    def edit
+        @cat = Cat.find_by id: params[:id]
+        render :edit
+    end
+
+    def update
+        @cat = Cat.find_by id: params[:id]
+
+        if @cat.update(cat_params)
+            redirect_to cat_url(@cat)
+        else
+            render :edit
             puts @cat.errors.full_messages
         end
     end
