@@ -15,6 +15,12 @@
 class Cat < ApplicationRecord
     validates :birth_date, presence: true
     validates :color, presence: true
+    validates :color, inclusion: in: [
+        "Tabby",
+        "Calico",
+        "Black",
+        "White"
+    ]
     validates :name, presence: true
     validates :sex, presence: true
     validates :description, presence: true
