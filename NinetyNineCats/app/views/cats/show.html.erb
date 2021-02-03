@@ -1,0 +1,21 @@
+<h1><%= @cat.name %></h1>
+<table>
+    <tbody>
+        <tr>
+            <td>Age</td>
+            <td><%= @cat.age %> years old</td>
+        </tr>
+        <tr>
+            <td>Color</td>
+            <td><%= @cat.color %></td>
+        </tr>
+        <tr>
+            <td>Sex</td>
+            <td> 
+                <%= "Female" if @cat.sex == "F" %>
+                <%= "Male" if @cat.sex == "M" %>
+            </td>
+        </tr>
+    </tbody>
+</table>
+<%= @cat.description%>
