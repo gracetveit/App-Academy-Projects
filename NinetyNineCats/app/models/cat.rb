@@ -23,7 +23,7 @@ class Cat < ApplicationRecord
     ], message: "%{value} is not a valid color"}
     validates :name, presence: true
     validates :sex, presence: true
-    validates :sex, inclusion: {in: %w(M, F),
+    validates :sex, inclusion: {in: %w(M F),
         message: "%{value} is not a valid sex"}
     validates :description, presence: true
 
