@@ -18,4 +18,9 @@ class Cat < ApplicationRecord
     validates :name, presence: true
     validates :sex, presence: true
     validates :description, presence: true
+
+    def age
+        age = Date.today - self.birth_date
+        age.round / 365
+    end
 end
