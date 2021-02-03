@@ -30,12 +30,6 @@
 
     <br>
 
-    <%# <label for="sex">Sex</label>
-    <select for="sex" name="cats[sex]">
-        <option disabled selected>-- Please Select--</option>
-        <option value="M">Male</option>
-        <option value="F">Female</option>
-    </select> %>
     <label for="male">Male</label>
     <input type="radio" for="male" name="cats[sex]" value="M" <%= cat.sex == "M" ? "checked" : "" %>>
 
