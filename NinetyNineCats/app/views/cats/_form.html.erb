@@ -5,9 +5,9 @@
 <% end %>
 
 <form action="<%= action_url %>" method="post">
-<% if action == :edit %>
-    <input type="hidden" name="_method" value="PATCH">
-<% end %>
+    <% if action == :edit %>
+        <input type="hidden" name="_method" value="PATCH">
+    <% end %>
 
     <label for="name">Name</label>
     <input id="name" type="text" name="cats[name]" value="<%= cat.name %>">
