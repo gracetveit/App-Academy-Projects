@@ -15,16 +15,16 @@
 class Cat < ApplicationRecord
     validates :birth_date, presence: true
     validates :color, presence: true
-    validates :color, inclusion: in: [
+    validates :color, inclusion: {in: [
         "Tabby",
         "Calico",
         "Black",
         "White"
-    ], message: "%{value} is not a valid color"
+    ], message: "%{value} is not a valid color"}
     validates :name, presence: true
     validates :sex, presence: true
-    validates :sex, inclusion: in: %w(M, F),
-        message: "%{value} is not a valid sex"
+    validates :sex, inclusion: {in: %w(M, F),
+        message: "%{value} is not a valid sex"}
     validates :description, presence: true
 
     def age
