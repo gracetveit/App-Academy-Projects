@@ -18,4 +18,26 @@
         </tr>
     </tbody>
 </table>
+<table>
+    <thead>
+        <tr>
+            <th>Rental Requests</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            <td>Start Date</td><td>End Date</td>
+        </tr>
+        <% CatRentalRequest.where(cat_id: @cat.id).order(:start_date).each do |request| %>
+            <tr>
+                <td>
+                    <%= request.start_date %>
+                </td>
+                <td>
+                    <%= request.end_date %>
+                </td>
+            </tr>
+        <% end %>
+    </tbody>
+</table>
 <%= @cat.description%>
