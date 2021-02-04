@@ -26,6 +26,12 @@ class Cat < ApplicationRecord
     validates :sex, inclusion: {in: %w(M F),
         message: "%{value} is not a valid sex"}
     validates :description, presence: true
+    
+    has_many :rental_requests,
+        dependent: :detroy,
+        primary_key: :id,
+        foreign_key: :cat_id,
+        class_name: :CatRentalRequest
 
     def age
         age = Date.today - self.birth_date
