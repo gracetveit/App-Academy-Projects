@@ -36,3 +36,10 @@ rental2 = CatRentalRequest.create(
     start_date: Date.new(2021, 2, 4),
     end_date: Date.new(2021, 2, 11)
 )
+
+rental3 = CatRentalRequest.create(
+    cat_id: cat1.id,
+    start_date: Date.new(2021, 2, 13),
+    end_date: Date.new(2021, 2, 20),
+    status: "APPROVED"
+)
