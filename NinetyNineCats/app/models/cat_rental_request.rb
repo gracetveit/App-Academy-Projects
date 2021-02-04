@@ -52,7 +52,7 @@ class CatRentalRequest < ApplicationRecord
 
     def does_not_overlap_approved_request
         if self.overlapping_approved_requests.exists?
-            errors.add("cannot overlap with an approved request")
+            errors.add(:invalid, "cannot overlap with an approved request")
         end
     end
 end
