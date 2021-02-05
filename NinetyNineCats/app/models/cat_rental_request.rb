@@ -23,31 +23,62 @@ class CatRentalRequest < ApplicationRecord
             "DENIED"
         ]
     }
-    validate :does_not_overlap_approved_request
+    validate :does_not_overlap_approved_request, on: :create
 
     belongs_to :cat,
         primary_key: :id,
         foreign_key: :cat_id,
         class_name: :Cat
+
+    def approve!
+        CatRentalRequest.transaction do
+            self.update(status: "APPROVED")
+            self.overlapping_pending_requests.each do |request|
+                request.update(status: "DENIED")
+            end
+        end
+    end
+
+    def deny!
+        CatRentalRequest.transaction do
+            self.update(status: "DENIED")
+        end
+    end
         
     private
 
     def overlapping_requests
-        dates = self.start_date..self.end_date
-        
         CatRentalRequest.where(
-            cat_id: self.cat_id, 
-            start_date: dates
+            cat_id: self.cat_id
+        ).where.not(
+            id: self.id
+        ).where.not(
+            "start_date > ?",
+            self.end_date
+        ).where.not(
+            "end_date < ?",
+            self.start_date
         ).or(
             CatRentalRequest.where(
-                cat_id: self.cat_id,
-                end_date: dates
+                cat_id: self.cat_id
+            ).where.not(
+                id: self.id
+            ).where.not(
+                "end_date < ?",
+                self.start_date
+            ).where.not(
+                "start_date > ?",
+                self.end_date
             )
         )
     end
 
     def overlapping_approved_requests
         self.overlapping_requests.where(status: "APPROVED")
+    end
+
+    def overlapping_pending_requests
+        self.overlapping_requests.where(status: "PENDING")
     end
 
     def does_not_overlap_approved_request
