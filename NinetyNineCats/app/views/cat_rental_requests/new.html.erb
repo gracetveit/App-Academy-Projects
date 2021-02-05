@@ -1,6 +1,6 @@
 <form action=<%= cat_rental_requests_url %> method="post">
     <label for="cat">Cat</label>
-    <select name="cat_rental_requests[cat_id]" id="">
+    <select name="cat_rental_requests[cat_id]" id="cat">
         <% Cat.all.each do |cat| %>
             <option value="<%= cat.id %>"><%= cat.name %></option>
         <% end %>

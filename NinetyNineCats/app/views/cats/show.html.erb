@@ -1,14 +1,17 @@
 <h1><%= @cat.name %></h1>
+
 <table>
     <tbody>
         <tr>
             <td>Age</td>
             <td><%= @cat.age %> years old</td>
         </tr>
+        
         <tr>
             <td>Color</td>
             <td><%= @cat.color %></td>
         </tr>
+        
         <tr>
             <td>Sex</td>
             <td> 
@@ -18,16 +21,19 @@
         </tr>
     </tbody>
 </table>
+
 <table>
     <thead>
         <tr>
             <th>Rental Requests</th>
         </tr>
     </thead>
+    
     <tbody>
         <tr>
             <td>Start Date</td><td>End Date</td>
         </tr>
+        
         <% CatRentalRequest.where(cat_id: @cat.id).order(:start_date).each do |request| %>
             <tr>
                 <td>
