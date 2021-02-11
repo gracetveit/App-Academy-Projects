@@ -8,9 +8,23 @@
 
     <%= stylesheet_link_tag 'application', media: 'all', 'data-turbolinks-track': 'reload' %>
     <%= javascript_pack_tag 'application', 'data-turbolinks-track': 'reload' %>
+    <%= %>
   </head>
 
   <body>
+    <h1><%= current_user.user_name if current_user%></h1>
+
     <%= yield %>
+    
+    <% if current_user %>
+      <form action="<%= session_url %>" method="POST">
+        <input type="hidden" name="_method" value="DELETE">
+        <input type="submit" value="Logout">
+      </form>
+    <% elsif request.url != new_session_url %>
+      <form action="<%= new_session_url%>" method="GET">
+        <input type="submit" value="Login">
+      </form>
+    <% end %>
   </body>
 </html>
