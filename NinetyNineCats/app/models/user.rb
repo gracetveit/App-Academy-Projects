@@ -17,6 +17,12 @@ class User < ApplicationRecord
     validates :session_token, uniqueness: true
     validates :password, length: { minimum: 6, allow_nil: true }
 
+    after_initialize do
+        if self.session_token == nil
+            self.session_token = User.generate_session_token
+        end
+    end
+
     def self.generate_session_token
         token = SecureRandom.urlsafe_base64
         if User.where(session_token: token).exists?
