@@ -1,0 +1,15 @@
+<% if action == :new_user %>
+    <% action_url = users_url %>
+<% else %>
+    <% action_url = session_url %>
+<% end %>
+
+<form action="<%= action_url %>" method="POST">
+    <label for="username">Username</label>
+    <input type="text" name="users[user_name]">
+
+    <label for="password">Password</label>
+    <input type="text" name="users[password]">
+    
+    <input type="submit" value="<%= action == :new_user ? "Register" : "Log in" %>">
+</form>

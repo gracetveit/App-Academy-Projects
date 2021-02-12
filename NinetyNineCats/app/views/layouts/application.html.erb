@@ -21,9 +21,12 @@
         <input type="hidden" name="_method" value="DELETE">
         <input type="submit" value="Logout">
       </form>
-    <% elsif request.url != new_session_url %>
+    <% elsif ![new_session_url, new_user_url].include?(request.url) %>
       <form action="<%= new_session_url%>" method="GET">
         <input type="submit" value="Login">
+      </form>
+      <form action="<%= new_user_url %>" method="GET">
+        <input type="submit" value="Register">
       </form>
     <% end %>
   </body>

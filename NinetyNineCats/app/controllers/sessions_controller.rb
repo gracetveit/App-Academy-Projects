@@ -6,16 +6,20 @@ class SessionsController < ApplicationController
         user_name = sessions_params["user_name"]
         password = sessions_params["password"]
         
-        @user = User.find_by_credentials(user_name, password)
-        @user.reset_session_token!
-        login!(@user)
+        begin
+            @user = User.find_by_credentials(user_name, password)
+            @user.reset_session_token!
+            login!(@user)
+        rescue => exception
+            puts exception.message
+        end
         redirect_to cats_url
     end
 
     def destroy
         current_user.reset_session_token! if current_user
         session[:session_token] = nil
-        redirect_back fallback_location: cats_url
+        redirect_to cats_url
     end
 
     private
