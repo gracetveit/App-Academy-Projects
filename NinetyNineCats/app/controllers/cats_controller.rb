@@ -1,4 +1,5 @@
 class CatsController < ApplicationController
+    skip_before_action :already_logged_in
     def index
         @cats = Cat.all
         render :index

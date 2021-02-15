@@ -1,4 +1,6 @@
 class CatRentalRequestsController < ApplicationController
+    skip_before_action :already_logged_in
+
     def new
         render :new
     end

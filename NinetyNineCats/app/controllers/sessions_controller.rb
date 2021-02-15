@@ -1,4 +1,5 @@
 class SessionsController < ApplicationController
+    skip_before_action :already_logged_in, only: [:destroy]
     def new
     end
 
