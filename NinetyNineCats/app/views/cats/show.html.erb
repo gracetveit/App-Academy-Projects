@@ -44,12 +44,16 @@
                 </td>
                 <td>
                     <% if request.status == "PENDING" %>
-                        <form action="/cat_rental_requests/<%= request.id %>/approve" method="GET">
-                            <input type="submit" value="Approve">
-                        </form>
-                        <form action="/cat_rental_requests/<%= request.id %>/deny" method="GET">
-                            <input type="submit" value="Deny">
-                        </form>
+                        <% if Cat.find(params[:id]).owner == current_user %>
+                            <form action="/cat_rental_requests/<%= request.id %>/approve" method="GET">
+                                <input type="submit" value="Approve">
+                            </form>
+                            <form action="/cat_rental_requests/<%= request.id %>/deny" method="GET">
+                                <input type="submit" value="Deny">
+                            </form>
+                        <% else %>
+                            Pending
+                        <% end %>
                     <% elsif request.status == "APPROVED"%>
                         Approved
                     <% else %>

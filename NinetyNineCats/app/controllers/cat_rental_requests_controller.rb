@@ -1,5 +1,5 @@
 class CatRentalRequestsController < ApplicationController
-    skip_before_action :already_logged_in
+    before_action :is_owner, only: [:approve, :deny]
 
     def new
         render :new
@@ -36,4 +36,13 @@ class CatRentalRequestsController < ApplicationController
             :end_date
         )
     end
+
+    def is_owner
+        cat = CatRentalRequest.find(params[:id]).cat
+        unless current_user == cat.owner
+            redirect_to cats_url
+        end
+    end
+
+    
 end

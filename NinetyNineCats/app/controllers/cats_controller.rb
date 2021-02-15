@@ -1,5 +1,6 @@
 class CatsController < ApplicationController
-    skip_before_action :already_logged_in
+    before_action :is_owner, only: [:edit, :update]
+
     def index
         @cats = Cat.all
         render :index
@@ -17,6 +18,7 @@ class CatsController < ApplicationController
 
     def create
         @cat = Cat.new(cat_params)
+        @cat.user_id = current_user.id
 
         if @cat.save
             redirect_to cat_url(@cat)
@@ -52,5 +54,12 @@ class CatsController < ApplicationController
             :sex,
             :description
         )
+    end
+
+    def is_owner
+        cat = Cat.find_by(id: params[:id])
+        unless current_user == cat.owner
+            redirect_to cats_url
+        end
     end
 end

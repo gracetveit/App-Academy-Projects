@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+    before_action :already_logged_in
     def new
         current_user.reset_session_token! if current_user
         session[:session_token] = nil

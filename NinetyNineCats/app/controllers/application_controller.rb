@@ -1,6 +1,5 @@
 class ApplicationController < ActionController::Base
     helper_method :login!, :current_user
-    before_action :already_logged_in
 
     def login!(user)
         @user = user
@@ -14,6 +13,13 @@ class ApplicationController < ActionController::Base
 
     def already_logged_in
         unless !current_user
+            redirect_to cats_url
+        end
+    end
+
+    def is_owner
+        cat = Cat.find_by(id: params[:id])
+        unless current_user == cat.owner
             redirect_to cats_url
         end
     end

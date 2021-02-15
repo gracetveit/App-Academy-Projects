@@ -18,6 +18,11 @@ class User < ApplicationRecord
     validates :session_token, uniqueness: true
     validates :password, length: { minimum: 6, allow_nil: true }
 
+    has_many :cats,
+        primary_key: :id,
+        foreign_key: :user_id,
+        class_name: :Cat
+
     after_initialize do
         if self.session_token == nil
             self.session_token = User.generate_session_token
