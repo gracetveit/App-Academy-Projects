@@ -23,6 +23,15 @@ class User < ApplicationRecord
         foreign_key: :user_id,
         class_name: :Cat
 
+    has_many :rental_requests,
+        primary_key: :id,
+        foreign_key: :user_id,
+        class_name: :CatRentalRequest
+
+    has_many :requested_cats,
+        through: :rental_requests,
+        source: :cat
+
     after_initialize do
         if self.session_token == nil
             self.session_token = User.generate_session_token

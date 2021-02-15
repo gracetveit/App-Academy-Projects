@@ -45,6 +45,10 @@ class Cat < ApplicationRecord
         foreign_key: :user_id,
         class_name: :User
 
+    has_many :requesting_users,
+        through: :rental_requests,
+        source: :user
+
     def age
         age = Date.today - self.birth_date
         age.round / 365

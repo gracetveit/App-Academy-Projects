@@ -7,6 +7,7 @@ class CatRentalRequestsController < ApplicationController
 
     def create
         @cat_rental_request = CatRentalRequest.new(cat_rental_request_params)
+        @cat_rental_request.user_id = current_user.id
         if @cat_rental_request.save
             render json: "Cat Rented!"
         else
@@ -33,7 +34,7 @@ class CatRentalRequestsController < ApplicationController
         params.require(:cat_rental_requests).permit(
             :cat_id,
             :start_date,
-            :end_date
+            :end_date,
         )
     end
 
