@@ -12,6 +12,7 @@
 
 class User < ApplicationRecord
     validates :user_name, presence: true
+    validates :user_name, uniqueness: true
     validates :password_digest, presence: true
     validates :session_token, presence: true
     validates :session_token, uniqueness: true
